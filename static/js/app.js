@@ -17,8 +17,8 @@ function init(){
     console.log(entry_1);
     
     makeBarGraph(entry_1);
-    makeBubbleGraph(entry_1);
-    makeDemographics(entry_1);
+    //makeBubbleGraph(entry_1);
+    makeMetaData(entry_1);
     });
 };
 
@@ -27,7 +27,7 @@ function makeBarGraph(sample) {
         let sample_data = data.samples;
         let results = sample_data.filter(id => id.id == sample);
         let first_results = results[0];
-        console.log(first_result);
+        console.log(first_results);
 
         let sample_values = first_results.sample_values.slice(0,10);
         let otu_ids = first_results.otu_ids.slice(0,10);
@@ -52,11 +52,31 @@ function makeBarGraph(sample) {
     });
 };
 
+function makeMetaData(sample) {
+    d3.json(url).then((data) => {
+        let metadata = data.metadata;
+
+        let value = metadata.filter(result => result.id == sample);
+
+        console.log(value);
+
+        let dataValue = value[0];
+
+        d3.select("#sample-metadata").text("");
+
+        Object.entries(dataValue).forEach(([key, value]) =>{
+            console.log(key, value);
+            d3.select("#sample-metadata").append("h6").text(`${key}: ${value}`);
+        });
+    });
+};
+
 function optionChanged(value){
 
     console.log(value);
 
     makeBarGraph(value);
+    makeMetaData(value);
 };
 
 init();
