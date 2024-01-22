@@ -46,11 +46,8 @@ function makeBarGraph(sample) {
             orientation: 'h'
         };
 
-        let data_bar = [trace_bar];
-
-
         let layout = {title: "Top Ten OTUs"};
-        Plotly.newPlot("bar", [data_bar], layout);
+        Plotly.newPlot("bar", [trace_bar], layout);
     });
 };
 
