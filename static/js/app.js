@@ -24,8 +24,8 @@ function init(){
 
 function makeBarGraph(sample) {
     d3.json(url).then((data) => {
-        let sample_data = data.samples;
-        let results = sample_data.filter(result => result.id == sample);
+        let sampleData = data.samples;
+        let results = sampleData.filter(result => result.id == sample);
         let first_results = results[0];
         console.log(first_results);
 
