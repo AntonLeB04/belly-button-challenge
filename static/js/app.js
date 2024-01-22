@@ -27,19 +27,21 @@ function makeBarGraph(sample) {
         let sampleData = data.samples;
         let results = sampleData.filter(result => result.id == sample);
         let first_results = results[0];
+
         console.log(first_results);
 
-        let sample_values = first_results.sample_values.slice(0,10);
-        let otu_ids = first_results.otu_ids.slice(0,10);
-        let otu_labels = first_results.otu_labels.slice(0,10);
+        let sample_values = first_results.sample_values.slice(0,10).reverse();
+        let otu_ids = first_results.otu_ids.slice(0,10).map(id => `OTU ${id}`).reverse();
+        let otu_labels = first_results.otu_labels.slice(0,10).reverse();
+
         console.log(sample_values);
         console.log(otu_ids);
         console.log(otu_labels);
 
         let trace_bar = {
-            x:sample_values.reverse(),
-            y: otu_ids.map(item => `OTU ${id}`).reverse(),
-            text: otu_labels.reverse(),
+            x:sample_values,
+            y: otu_ids,
+            text: otu_labels,
             type: 'bar',
             orientation: 'h'
         };
@@ -81,7 +83,6 @@ function makeBubbleGraph(sample) {
         };
         
         let layout = {
-            title: "Bacteria Per Sample",
             hovermode: "closest",
             xaxis: {title: "OTU ID"},
         };
