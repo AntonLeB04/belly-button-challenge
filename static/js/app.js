@@ -17,7 +17,7 @@ function init(){
     console.log(entry_1);
     
     makeBarGraph(entry_1);
-    //makeBubbleGraph(entry_1);
+    makeBubbleGraph(entry_1);
     makeMetaData(entry_1);
     });
 };
@@ -25,7 +25,7 @@ function init(){
 function makeBarGraph(sample) {
     d3.json(url).then((data) => {
         let sample_data = data.samples;
-        let results = sample_data.filter(id => id.id == sample);
+        let results = sample_data.filter(result => result.id == sample);
         let first_results = results[0];
         console.log(first_results);
 
@@ -52,6 +52,44 @@ function makeBarGraph(sample) {
     });
 };
 
+function makeBubbleGraph(sample) {
+    d3.json(url).then((data) => {
+        let infoSample = data.samples;
+
+        let value = infoSample.filter(result => result.id == sample);
+
+        let dataValue = value[0];
+
+        let otu_ids = dataValue.otu_ids;
+
+        let otu_labels = dataValue.otu_labels;
+
+        let sample_values = dataValue.sample_values;
+
+        console.log(otu_ids, otu_labels, sample_values);
+
+        let trace_bubble = {
+            x: otu_ids,
+            y: sample_values,
+            text:otu_labels,
+            mode: "markers",
+            marker: {
+                size: sample_values,
+                color: otu_ids,
+                colorscale: "Earth"
+            }
+        };
+        
+        let layout = {
+            title: "Bacteria Per Sample",
+            hovermode: "closest",
+            xaxis: {title: "OTU ID"},
+        };
+        Plotly.newPlot("bubble", [trace_bubble], layout)
+    });
+
+};
+
 function makeMetaData(sample) {
     d3.json(url).then((data) => {
         let metadata = data.metadata;
@@ -76,6 +114,7 @@ function optionChanged(value){
     console.log(value);
 
     makeBarGraph(value);
+    makeBubbleGraph(value);
     makeMetaData(value);
 };
 
